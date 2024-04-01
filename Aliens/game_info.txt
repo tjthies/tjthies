@@ -1,0 +1,7 @@
+In Alien Invasion, the player controls a space ship that is at the bottom of the
+screen. The player uses the arrow keys to move the space ship and the space bar 
+to fire bullets at the aliens. At the beginning of each game, the sky will fill 
+with aliens, which the player must shoot down. After the last alien is shot down, 
+a more difficult level will begin. If any Alien reaches the bottom of the screen 
+or any of the ships, the player loses a ship. After losing three ships, the game 
+ends.
