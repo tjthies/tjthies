@@ -68,6 +68,7 @@ class AlienInvasion():
         """Respond to key presses and mouse events."""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                self.stats.save_high_score()
                 sys.exit()
             # Move ship to the left & right
             elif event.type == pygame.KEYDOWN:
@@ -83,6 +84,8 @@ class AlienInvasion():
         # Reset game statistics.
         self.stats.reset_stats()
         self.scoreboard.prep_score()
+        self.scoreboard.prep_level()
+        self.scoreboard.prep_ships()
         self.game_active = True
 
         # Remove remaining aliens and bullets.
@@ -111,6 +114,7 @@ class AlienInvasion():
         elif event.key == pygame.K_LEFT:      
             self.ship.moving_left = True 
         elif event.key == pygame.K_q or event.key == pygame.K_ESCAPE:
+            self.stats.save_high_score()
             sys.exit()
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
@@ -153,12 +157,17 @@ class AlienInvasion():
             for aliens in collisions.values():
                 self.stats.score += self.settings.alien_points * len(aliens)
             self.scoreboard.prep_score()
+            self.scoreboard.check_high_score()
 
         # Destroy existing bullets and create new fleet.
         if not self.aliens:
             self.bullets.empty()
             self._create_fleet()
             self.settings.increase_speed()
+
+            # Increase level
+            self.stats.level += 1
+            self.scoreboard.prep_level()
 
     def _create_fleet(self):
         """Create fleet of aliens"""
@@ -237,6 +246,7 @@ class AlienInvasion():
         # Decrement ships available
         if self.stats.ships_available > 0:
             self.stats.ships_available -= 1
+            self.scoreboard.prep_ships()
 
             # Remove any remaining bullets and aliens.
             self.bullets.empty()
